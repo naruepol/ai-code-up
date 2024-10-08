@@ -1,0 +1,59 @@
+<html>
+  <body>
+    <!-- ... Your HTML and CSS -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+    <script type="module">
+        let text;
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+        // Fetch your API_KEY
+        const API_KEY = "";
+    
+        // Access your API key (see "Set up your API key" above)
+        const genAI = new GoogleGenerativeAI(API_KEY);
+    
+        async function run(query) {
+        // For text-only input, use the gemini-pro model
+        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    
+        const n_query = "แปลงตัวเลข \"" + query + "\" ให้เป็นคำอ่านภาษาไทย";
+        console.log(n_query);
+        const prompt = n_query;
+    
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        text = response.text();
+        console.log(text);
+        return text;
+        }
+        // Attach run to the window object
+        window.run = run;
+    </script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h3>ใส่ตัวเลข ที่แปลงเป็นภาษาไทย</h3>
+            <form onsubmit="event.preventDefault(); run(document.getElementById('query').value).then(function(result) { document.getElementById('demo').innerHTML = result; });">
+                <div class="form-group">
+                    <textarea id="query" class="form-control" placeholder="Enter query" rows="7" cols="70"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <p id="demo"></p>
+        </div>
+    </div>
+</div>
+  </body>
+  
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</html>

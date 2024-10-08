@@ -1,0 +1,47 @@
+<html>
+  <body>
+    <!-- ... Your HTML and CSS -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+    <script type="module">
+        let text;
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+        // Fetch your API_KEY
+        const API_KEY = "";
+    
+        // Access your API key (see "Set up your API key" above)
+        const genAI = new GoogleGenerativeAI(API_KEY);
+    
+        async function run(query) {
+        // For text-only input, use the gemini-pro model
+        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    
+        const n_query = "แปลงคำว่า \"" + query + "\" ให้เป็นภาษาอังกฤษ";
+        console.log(n_query);
+        const prompt = n_query;
+    
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        text = response.text();
+        console.log(text);
+        return text;
+        }
+        // Attach run to the window object
+        window.run = run;
+    </script>
+
+<p>ตั้งชื่อหัวข้อให้เป็นภาษาอังกฤษ</p>
+<form onsubmit="event.preventDefault(); run(document.getElementById('query').value).then(function(result) { document.getElementById('demo').innerHTML = result; });">
+    <input type="text" id="query" placeholder="Enter query" size="70">
+    <button type="submit">Submit</button>
+</form>
+
+<p id="demo"></p>
+
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<html>
+  <body>
+    <!-- ... Your HTML and CSS -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+    <script type="module">
+        let text;
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+        // Fetch your API_KEY
+        const API_KEY = "";
+    
+        // Access your API key (see "Set up your API key" above)
+        const genAI = new GoogleGenerativeAI(API_KEY);
+    
+        async function run() {
+        // For text-only input, use the gemini-pro model
+        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    
+        const prompt = "You are a math expert. show me how to solve the equation 6-2*5 show only result";
+    
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        text = response.text();
+        console.log(text);
+        return text;
+        }
+    
+        // Attach run to the window object
+        window.run = run;
+    </script>
+    <script>
+        function myFunction() {
+            run().then(function(result) {
+            document.getElementById("demo").innerHTML = result;
+            });
+        }
+    </script>
+
+<p>Click to Show Result of 6-2*5:</p>
+
+<button onclick="myFunction()">Click me</button>
+
+<p id="demo"></p>
+
+  </body>
+</html>
